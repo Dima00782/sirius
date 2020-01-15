@@ -3,7 +3,33 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <meta content="utf-8" http-equiv="encoding">
     </head>
-    <body>
-        <script src="http://localhost:8080/src.js?url=index.html"></script>
+    <body id="body_id">
+        <h1>Some usefull info</h1>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+            It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        </p>
+
+        <h1>Oter usefull info</h1>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+            It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        </p>
+
+        <script>
+            function GetFingerprint() {
+                // PUT YOUR CODE HERE
+            }
+            let body = document.getElementById("body_id");
+            let img_tag = document.createElement("img");
+            img_tag.src = "http://localhost:8080/?site_id=mysss_site&fingerprint=12345";
+            img_tag.height = "1px";
+            img_tag.width = "1px";
+            body.appendChild(img);
+        </script>
     </body>
 </html>
