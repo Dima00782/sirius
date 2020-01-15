@@ -21,15 +21,79 @@
         </p>
 
         <script>
-            function GetFingerprint() {
-                // PUT YOUR CODE HERE
+            function bin2hex(s){    
+                var v,i, f = 0, a = [];  
+                s += '';  
+                f = s.length;  
+                
+                for (i = 0; i<f; i++) {  
+                    a[i] = s.charCodeAt(i).toString(16).replace(/^([\da-f])$/,"0$1");  
+                }
+                return a.join('');  
             }
+
             let body = document.getElementById("body_id");
+
+            function getGPUVendor() {
+                var canvas = document.createElement('canvas');
+                var gl;
+                var debugInfo;
+                var vendor;
+                var renderer;
+                try {
+                    gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                } catch (e) {
+                    console.log("getGPUVendor failed");
+                }
+                
+                if (gl) {
+                    debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+                    renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                }
+
+                return vendor + " " + renderer;
+            }
+            
+            function TrivialFingerprint() {
+                // return navigator.userAgent;
+                // return navigator.buildID;
+                // return screen.availWidth;
+                // return navigator.hardwareConcurrency;
+                return getGPUVendor();
+            }
+
+            function CanvasFingerprint() {
+                let canvas = document.createElement('canvas');
+                let ctx = canvas.getContext('2d');
+                let txt = "BrowserLeaks,com <canvas> 1.0";
+                ctx.textBaseline = "top";
+
+                // The most common type
+                ctx.font = "14px 'Arial'";
+                ctx.textBaseline = "alphabetic";
+                ctx.fillStyle = "#f60";
+                ctx.fillRect(125,1,62,20);
+                // Some tricks for color mixing to increase the difference in rendering
+                ctx.fillStyle = "#069";
+                ctx.fillText(txt, 2, 15);
+                ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+                ctx.fillText(txt, 4, 17);
+
+                let b64 = canvas.toDataURL().replace("data:image/png;base64,", "");
+                let bin = atob(b64);
+                return bin2hex(bin.slice(-16,-12));
+            }
+
+            function GetFingerprint() {
+                return TrivialFingerprint();
+            }
+
             let img_tag = document.createElement("img");
-            img_tag.src = "http://localhost:8080/?site_id=mysss_site&fingerprint=12345";
-            img_tag.height = "1px";
-            img_tag.width = "1px";
-            body.appendChild(img);
+            img_tag.src = "http://localhost:8080/?site_id=my_super_site&fingerprint=" + encodeURIComponent(GetFingerprint());
+            img_tag.height = 1;
+            img_tag.width = 1;
+            body.appendChild(img_tag);
         </script>
     </body>
 </html>
